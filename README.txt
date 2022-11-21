@@ -1,0 +1,1 @@
+My solution of generic stack exercise using c# 
