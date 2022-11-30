@@ -1,84 +1,82 @@
 ﻿using System;
+
 namespace myStacknamespace
 {
+
     class MyStack<T>
     {
-        private T[]? stack;
-        private int count = -1;
-        private readonly int maxSize;
-        public MyStack(int maxSize = 20) //default is 20, if user doesn't enter it
+        protected readonly T[]? stack;
+        public int count = 0;
+        protected readonly int _maxSize;
+        public MyStack(int maxSize = 20)
         {
-            this.maxSize = maxSize;
-            //Console.WriteLine(maxSize);
+            this._maxSize = maxSize;
             stack = new T[maxSize];
         }
 
-        public void Push(T value)
-        { 
-            if(count+1 >= maxSize)
-            {
-                Console.WriteLine("over flow stack, It can't add anything ");
 
+        public bool Push(T value)
+        { 
+            if(count >= _maxSize) 
+            {
+                throw new IndexOutOfRangeException("over flow stack, It can't add anything");
+                return false;
             }
             else
             {
-                stack[++count] = value;
+                stack[count++] = value;
+                return true;
             }
         }
-
+        
         public T Pop()
         {
-            if (count == -1)
+            //out T? value
+
+            //value = default;
+            //if (count == 0)
+            //{
+            //    return false;
+            //    throw new InvalidOperationException("under flow stack, please push to it first");
+            //}
+            //else
+            //    value = stack[--count];
+            //return true;
+
+            if (count == 0)
             {
-                Console.WriteLine("under flow stack, please push to it first");
-                // throw new InvalidOperationException();
-                return default(T);
+                throw new InvalidOperationException("under flow stack, please push to it first");
             }
             else
-                return stack[count--];
+            return stack[--count];
         }
 
         public T Peak()
         {
-            if (count == -1)
-            {
-                Console.WriteLine("under flow stack, please push to it first");
-                return default(T);
-                //throw new InvalidOperationException();
-            }
-            else
-                return stack[count];
+            //if (Pop(out var value))
+            //{
+            //    v = value;
+            //    return true;
+            //}
+            //else
+            //    return false;
+
+            return Pop();
+
         }
 
         public void Print()
         {
-            Console.Write("Stack contains:  ");
-            for (int i = 0; i <= count; i++)
-            {
-                if (i == count )
-                {
-                    Console.Write(stack[i]);
-                    Console.WriteLine();
-
-                }
-                else
-                    Console.Write(stack[i] + ", ");
-
-            }
+            Prints<T>.Print(stack, count);
+            
         }
 
         public void Clear()
         {
-            Console.WriteLine("Stack after clear:");
-
             for (int i = 0; i < stack.Length; i++)
             {
                 stack[i] = default(T);
-                count = -1;
-                if(i == (stack.Length-1))
-                    Console.WriteLine();
-                else
-                    Console.Write(stack[i]);
+                count = 0;
 
             }
         }
