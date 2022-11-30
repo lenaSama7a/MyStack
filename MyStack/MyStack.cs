@@ -1,67 +1,67 @@
 ﻿using System;
+using System.Drawing;
+using System.Xml.Linq;
 
 namespace myStacknamespace
 {
 
     class MyStack<T>
     {
-        protected readonly T[]? stack;
-        public int count = 0;
-        protected readonly int _maxSize;
-        public MyStack(int maxSize = 20)
+        private T[]? stack;
+        private int count = 0;
+        private readonly int _size = 20;
+
+        public MyStack()
         {
-            this._maxSize = maxSize;
-            stack = new T[maxSize];
+            stack = new T[_size];
         }
 
-
-        public bool Push(T value)
-        { 
-            if(count >= _maxSize) 
+        public void Push(T value)
+        {
+            if (count == _size)
             {
-                throw new IndexOutOfRangeException("over flow stack, It can't add anything");
-                return false;
+                EnsureCapacity();
             }
             else
             {
                 stack[count++] = value;
-                return true;
             }
         }
-        
+
+        private void EnsureCapacity()
+        {
+            int newSize = _size * 2;
+            T[] newStack = new T[newSize];
+            for (int i = 0; i < _size; i++)
+            {
+                newStack[i] = stack[i];
+            }
+            stack = newStack;
+        }
+
         public T Pop()
         {
-            //out T? value
-
-            //value = default;
-            //if (count == 0)
-            //{
-            //    return false;
-            //    throw new InvalidOperationException("under flow stack, please push to it first");
-            //}
-            //else
-            //    value = stack[--count];
-            //return true;
-
             if (count == 0)
             {
                 throw new InvalidOperationException("under flow stack, please push to it first");
             }
             else
-            return stack[--count];
+            {
+                return stack[--count];
+            }
+
         }
 
         public T Peak()
         {
-            //if (Pop(out var value))
-            //{
-            //    v = value;
-            //    return true;
-            //}
-            //else
-            //    return false;
-
-            return Pop();
+            if (count == 0)
+            {
+                throw new InvalidOperationException("under flow stack, please push to it first");
+            }
+            else
+            {
+                return stack[count - 1];
+            }
 
         }
 
